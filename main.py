@@ -18,11 +18,11 @@ from md5lib import md5
 from mencodeUTF16_LE import *
 from fritzactors import actors
 
-#ServerPort=2234 # Pool
-ServerPort=2222 # Test
+ServerPort=2234 # Pool
+#ServerPort=2222 # Test
 
-pStart=18
-pDauer=2
+pStart=11
+pDauer=4
 pRunStatus=False # Pumpe aus/ein
 pHand=False # Pumpe von Hand aus/ein - schaltet Timer und Frostschutz aus, wenn ein, da die Pumpe schon läuft
 
@@ -534,6 +534,7 @@ while True:
             
     
     
+
 
 
 
