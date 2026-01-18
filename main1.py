@@ -3,7 +3,6 @@
 # Frostschutz WPumpe
 # Sommer-/Winterzeit
 
-import STOP
 import network
 import time
 import socket
@@ -19,9 +18,9 @@ from md5lib import md5
 from mencodeUTF16_LE import *
 from fritzactors import actors
 
-pSTOP=
-ServerPort=2234 # Pool
-#ServerPort=2222 # Test
+#pSTOP=
+#ServerPort=2234 # Pool
+ServerPort=2222 # Test
 
 pStart=11
 pDauer=4
@@ -536,6 +535,7 @@ while True:
             
     
     
+
 
 
 
