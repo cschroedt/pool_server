@@ -18,7 +18,7 @@ from md5lib import md5
 from mencodeUTF16_LE import *
 from fritzactors import actors
 
-#pSTOP=     # disable to introduce a sytax error in order to regain local access to the pico
+#pSTOP=     # uncomment to introduce a sytax error in order to regain local access to the pico
 #ServerPort=2234 # Pool
 ServerPort=2222 # Test
 
@@ -535,6 +535,7 @@ while True:
             
     
     
+
 
 
 
