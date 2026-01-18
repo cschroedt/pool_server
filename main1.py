@@ -3,6 +3,7 @@
 # Frostschutz WPumpe
 # Sommer-/Winterzeit
 
+import STOP
 import network
 import time
 import socket
@@ -534,6 +535,7 @@ while True:
             
     
     
+
 
 
 
