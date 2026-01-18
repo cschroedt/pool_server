@@ -19,6 +19,7 @@ from md5lib import md5
 from mencodeUTF16_LE import *
 from fritzactors import actors
 
+pSTOP=
 ServerPort=2234 # Pool
 #ServerPort=2222 # Test
 
@@ -535,6 +536,7 @@ while True:
             
     
     
+
 
 
 
