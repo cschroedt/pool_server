@@ -1,7 +1,8 @@
-# Version 5.3 - 25_12_06
+# Version 5.4 - 26_01_18
 # Port 2234
 # Frostschutz WPumpe
 # Sommer-/Winterzeit
+
 
 import network
 import time
@@ -9,7 +10,7 @@ import socket
 import machine
 from machine import *
 import math
-from secrets import *
+#from secrets import *
 from do_connect import *
 #from machine import RTC
 import ntptime
@@ -18,7 +19,7 @@ from md5lib import md5
 from mencodeUTF16_LE import *
 from fritzactors import actors
 
-pSTOP=     # uncomment to introduce a sytax error in order to regain local access to the pico
+#pSTOP=
 #ServerPort=2234 # Pool
 ServerPort=2222 # Test
 
@@ -26,6 +27,13 @@ pStart=11
 pDauer=4
 pRunStatus=False # Pumpe aus/ein
 pHand=False # Pumpe von Hand aus/ein - schaltet Timer und Frostschutz aus, wenn ein, da die Pumpe schon läuft
+
+puBlock=False # Superfrostschutz, Wärmepumenverschraubung ist offen, Pumpe darf nie laufen
+datei=open("Pumpe.txt",'r')
+Msg=datei.read()
+datei.close()
+if Msg=="block":
+    puBlock=True
 
 FrostGrenze=0.1
 TempKoeff0=286.47
@@ -79,45 +87,45 @@ def tick(timer):  # hier ist die Zeitabfrage
         pEnde-=24
         
     if pHand==False:  # nur wenn Pumpe nicht von Hand gestartet wurde...
-        if imi<21 and ihr==pStart and pDauer>0 and pRunStatus==False:
+        if imi<21 and ihr==pStart and pDauer>0 and pRunStatus==False and puBlock==False:
             Pu_n2.value(0)
             Pu_n3.value(0)
             Pu_n1.value(1)
             Pu_go.value(1)
-            datei=open("Pumpe",'w')
+            datei=open("Pumpe.txt",'w')
             datei.write("Pumpe n1")
             datei.close()
             pRunStatus=True
             print("Zeitsteuerung: Pumpe ein")
             print(DatZeit())
-        elif imi<21 and ihr==pEnde and pDauer>0 and pRunStatus==True:
+        elif imi<21 and ihr==pEnde and pDauer>0 and pRunStatus==True and puBlock==False:
             Pu_n1.value(0)
             Pu_n2.value(0)
             Pu_n3.value(0)
             Pu_go.value(0)
-            datei=open("Pumpe",'w')
+            datei=open("Pumpe.txt",'w')
             datei.write("Pumpe stop")
             datei.close()
             pRunStatus=False
             print("Zeitsteuerung: Pumpe aus")
             print(DatZeit())
-        if temperatur<FrostGrenze and pRunStatus==False:
+        if temperatur<FrostGrenze and pRunStatus==False and puBlock==False:
             Pu_n2.value(0)
             Pu_n3.value(0)
             Pu_n1.value(1)
             Pu_go.value(1)
-            datei=open("Pumpe",'w')
+            datei=open("Pumpe.txt",'w')
             datei.write("Pumpe n1")
             datei.close()
             #pRunStatus=True
             #print("Frostschutz: Pumpe ein "+str(temperatur)+" "+str(FrostGrenze))
             #print(DatZeit())
-        if temperatur>FrostGrenze and pRunStatus==False:
+        if temperatur>FrostGrenze and pRunStatus==False and puBlock==False:
             Pu_n1.value(0)
             Pu_n2.value(0)
             Pu_n3.value(0)
             Pu_go.value(0)
-            datei=open("Pumpe",'w')
+            datei=open("Pumpe.txt",'w')
             datei.write("Pumpe stop")
             datei.close()
             #pRunStatus=False
@@ -177,7 +185,7 @@ bufferSize=1024
 UDPServer=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 UDPServer.bind((ServerIP,ServerPort))
 iLED.value(1)
-datei=open("Pumpe",'w')
+datei=open("Pumpe.txt",'w')
 datei.write("Pumpe stop")
 datei.close()
 jetzt = rtc.datetime()
@@ -229,14 +237,14 @@ while True:
         #print("Becken: ",M_Bec_zu.value()," ",M_Bec_auf.value())
         #print("Kanal: ",M_Kan_zu.value()," ",M_Kan_auf.value())
         Stellungen="Ventilstellungen: \n"
-        datei=open("SK_BO",'r')
+        datei=open("SK_BO.txt",'r')
         Stellungen+="\n"+datei.read()
         datei.close()
         #Stellungen+="Skimmer/Boden: "+str(M_Sk_auf.value())+" "+str(M_Bo_auf.value())
         Stellungen+="\nFilter: "+str(M_Fil_fil.value())+" "+str(M_Fil_ruec.value())
         Stellungen+="\nBecken: "+str(M_Bec_zu.value())+" "+str(M_Bec_auf.value())
         Stellungen+="\nKanal: "+str(M_Kan_zu.value())+" "+str(M_Kan_auf.value())
-        datei=open("Pumpe",'r')
+        datei=open("Pumpe.txt",'r')
         Stellungen+="\n"+datei.read()
         datei.close()
         print(Stellungen)
@@ -246,10 +254,10 @@ while True:
     elif messageDecoded == "02":	# Skimmer auf
         Bo_auf.value(0)
         Sk_auf.value(1)
-        datei=open("SK_BO",'w')
+        datei=open("SK_BO.txt",'w')
         datei.write("Skimmer auf")
         datei.close()
-        datei=open("SK_BO_tm",'w')
+        datei=open("SK_BO_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
@@ -260,46 +268,46 @@ while True:
     elif messageDecoded == "03":	# Boden auf
         Sk_auf.value(0)
         Bo_auf.value(1)
-        datei=open("SK_BO",'w')
+        datei=open("SK_BO.txt",'w')
         datei.write("Boden auf")
         datei.close()
-        datei=open("SK_BO_tm",'w')
+        datei=open("SK_BO_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
     elif messageDecoded == "04": # Filter filtern
         Fil_ruec.value(0)
-        datei=open("Filter_tm",'w')
+        datei=open("Filter_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
     elif messageDecoded == "05": # Filter rückspülen
         Fil_ruec.value(1)
-        datei=open("Filter_tm",'w')
+        datei=open("Filter_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
     elif messageDecoded == "06": # Becken auf
         Bec_zu.value(0)
-        datei=open("Becken_tm",'w')
+        datei=open("Becken_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
     elif messageDecoded == "07": # Becken zu
         Bec_zu.value(1)
-        datei=open("Becken_tm",'w')
+        datei=open("Becken_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
     elif messageDecoded == "x8xy": # Kanal auf
         Kan_auf.value(1)
-        datei=open("Kanal_tm",'w')
+        datei=open("Kanal_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
     elif messageDecoded == "09": # Kanal zu
         Kan_auf.value(0)
-        datei=open("Kanal_tm",'w')
+        datei=open("Kanal_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
@@ -308,34 +316,34 @@ while True:
         Pu_n2.value(0)
         Pu_n3.value(0)
         Pu_go.value(0)
-        datei=open("Pumpe",'w')
+        datei=open("Pumpe.txt",'w')
         datei.write("Pumpe stop")
         datei.close()
         pHand=False
-    elif messageDecoded == "11": # Pumpe n1
+    elif messageDecoded == "11" and puBlock==False: # Pumpe n1
         Pu_n2.value(0)
         Pu_n3.value(0)
         Pu_n1.value(1)
         Pu_go.value(1)
-        datei=open("Pumpe",'w')
+        datei=open("Pumpe.txt",'w')
         datei.write("Pumpe n1")
         datei.close()
         pHand=True
-    elif messageDecoded == "12": # Pumpe n2
+    elif messageDecoded == "12" and puBlock==False: # Pumpe n2
         Pu_n1.value(0)
         Pu_n3.value(0)
         Pu_n2.value(1)
         Pu_go.value(1)
-        datei=open("Pumpe",'w')
+        datei=open("Pumpe.txt",'w')
         datei.write("Pumpe n2")
         datei.close()
         pHand=True
-    elif messageDecoded == "13": # Pumpe n3
+    elif messageDecoded == "13" and puBlock==False: # Pumpe n3
         Pu_n1.value(0)
         Pu_n2.value(0)
         Pu_n3.value(1)
         Pu_go.value(1)
-        datei=open("Pumpe",'w')
+        datei=open("Pumpe.txt",'w')
         datei.write("Pumpe n3")
         datei.close()
         pHand=True
@@ -424,10 +432,10 @@ while True:
         backEncoded=Msg.encode('utf-8')
         UDPServer.sendto(backEncoded,address)
         print("fertig")
-        datei=open("SK_BO",'w')
+        datei=open("SK_BO.txt",'w')
         datei.write("Skimmer und Boden auf")
         datei.close()
-        datei=open("SK_BO_tm",'w')
+        datei=open("SK_BO_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
@@ -448,10 +456,10 @@ while True:
         backEncoded=Msg.encode('utf-8')
         UDPServer.sendto(backEncoded,address)
         print("fertig")
-        datei=open("SK_BO",'w')
+        datei=open("SK_BO.txt",'w')
         datei.write("Skimmer und Boden zu")
         datei.close()
-        datei=open("SK_BO_tm",'w')
+        datei=open("SK_BO_tm.txt",'w')
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
@@ -465,25 +473,25 @@ while True:
         UDPServer.sendto(backEncoded,address)
         print("gesendet: "+Msg)
     elif (messageDecoded == "42" or messageDecoded == "43"): # Datum/Zeit der letzten Sk_Bo-Bewegung ausgeben
-        datei=open("SK_BO_tm",'r')
+        datei=open("SK_BO_tm.txt",'r')
         Msg = datei.read()
         datei.close()
         backEncoded=str(Msg).encode('utf-8')
         UDPServer.sendto(backEncoded,address)
     elif (messageDecoded == "44" or messageDecoded == "45"): # Datum/Zeit der letzten Filter-Bewegung ausgeben
-        datei=open("Filter_tm",'r')
+        datei=open("Filter_tm.txt",'r')
         Msg = datei.read()
         datei.close()
         backEncoded=str(Msg).encode('utf-8')
         UDPServer.sendto(backEncoded,address)
     elif (messageDecoded == "46" or messageDecoded == "47"): # Datum/Zeit der letzten Becken-Bewegung ausgeben
-        datei=open("Becken_tm",'r')
+        datei=open("Becken_tm.txt",'r')
         Msg = datei.read()
         datei.close()
         backEncoded=str(Msg).encode('utf-8')
         UDPServer.sendto(backEncoded,address)
     elif (messageDecoded == "48" or messageDecoded == "49"): # Datum/Zeit der letzten Kanal-Bewegung ausgeben
-        datei=open("Kanal_tm",'r')
+        datei=open("Kanal_tm.txt",'r')
         Msg = datei.read()
         datei.close()
         backEncoded=str(Msg).encode('utf-8')
@@ -521,7 +529,23 @@ while True:
         
     elif (messageDecoded == "69"): # Laufdauer Pumpe löschen
         pDauer=0
-    
+        
+    elif (messageDecoded == "7777"): # WP-Verschraubung ist offen, Pumpe darf nie laufen
+        puBlock=True
+        datei=open("Pumpe.txt",'w')
+        datei.write("Pumpe geblockt")
+        datei.close()
+        Pu_n1.value(0)
+        Pu_n2.value(0)
+        Pu_n3.value(0)
+        Pu_go.value(0)
+        print("Pumpe geblockt")
+    elif (messageDecoded == "8888"): # alles wieder dicht...
+        datei=open("Pumpe.txt",'w')
+        puBlock=False
+        datei.write("Pumpe stop")
+        datei.close()
+        print("Pumpe normal")
     else:
         print("Ungültiges Kommando")
 
@@ -535,12 +559,6 @@ while True:
             
     
     
-
-
-
-
-
-
 
 
 
