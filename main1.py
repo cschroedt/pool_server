@@ -20,8 +20,8 @@ from mencodeUTF16_LE import *
 from fritzactors import actors
 
 #pSTOP=
-#ServerPort=2234 # Pool
-ServerPort=2222 # Test
+ServerPort=2234 # Pool
+#ServerPort=2222 # Test
 
 pStart=11
 pDauer=4
@@ -559,6 +559,7 @@ while True:
             
     
     
+
 
 
 
