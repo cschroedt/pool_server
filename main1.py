@@ -1,6 +1,7 @@
 # Version 5.61 - 26_04_29
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
+# SK/BO Halbstellungen korrigiert
 # Sommer-/Winterzeit 
 
 
