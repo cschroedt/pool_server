@@ -1,4 +1,4 @@
-# Version 5.60 - 26_03_23
+# Version 5.61 - 26_04_29
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # Sommer-/Winterzeit
@@ -27,8 +27,8 @@ ServerPort=2234 # Pool
 
 #Konstanten für Laufdauer, Temperaturen, Filtersättigung
 #werden später über Dateien verwaltet
-pStart=12
-pDauer=3
+pStart=11
+pDauer=5
 
 ATempKoeff0=286.47 # Außentemperatur über Pice
 ATempKoeff1=-382.79 # Lesen der Params mit 23, Setzen mit 24
@@ -503,7 +503,7 @@ while True:
         print("Boden offen, noch 9s")
         Bo_auf.value(0) # Skimmer auf anfahren
         Sk_auf.value(1)
-        time.sleep(9.0)
+        time.sleep(6.5)
         Bo_auf.value(0)
         Sk_auf.value(0) # und alles anhalten        
         Msg="Skimmer und Boden sind auf"
