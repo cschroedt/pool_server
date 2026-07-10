@@ -1,4 +1,4 @@
-# Version 5.62 - 26_07_10
+# Version 5.63 - 26_07_10
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
@@ -116,6 +116,8 @@ smtp.write("Subject: Poolserver-Restart\n\n")
 smtp.write("Neustart")
 smtp.send()
 smtp.quit()
+
+send_Mail("eMail Funktion ok")
 
 
 def DatZeit():
