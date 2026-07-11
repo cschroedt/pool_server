@@ -278,7 +278,7 @@ jetzt = rtc.datetime()
 
 #print("vor Hauptschleife")
 
-sendMail("vor Hauptschleife - 1")
+#sendMail("vor Hauptschleife - 1")
 
 while True:
     jetzt=rtc.datetime()
