@@ -117,6 +117,7 @@ smtp.write("Neustart")
 smtp.send()
 smtp.quit()
 
+sendMail("Meldung")
 
 def DatZeit():
     jetzt=rtc.datetime()
