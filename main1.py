@@ -110,14 +110,6 @@ except:
     datei.write(dData)
     datei.close()
 
-smtp = umail.SMTP('smtp.gmail.com', 587, username='z087320002@gmail.com', password='tqrthrlfpjimflxy')
-smtp.to('z08732-0002@gmx.de')
-smtp.write("Subject: Poolserver-Restart\n\n")
-smtp.write("Neustart")
-smtp.send()
-smtp.quit()
-
-#sendMail("Meldung")
 
 def DatZeit():
     jetzt=rtc.datetime()
@@ -132,7 +124,8 @@ def DatZeit():
     mi=str(jetzt[5])
     tm=yr+" "+mo+" "+dy+" "+hr+" "+mi
     return tm
-
+    
+sendMail("Neustart: "+DatZeit())
 
 mins = 10 # 10 min Genauigkeit für Start/Stop Pumpe
 def tick(timer):  # hier ist die Zeitabfrage
@@ -306,12 +299,7 @@ while True:
     messageDecoded=message.decode('utf-8')
     print('Empfangen:',messageDecoded,' von ',address[0])
     back='Emfangen wurde: '+messageDecoded
-    smtp = umail.SMTP('smtp.gmail.com', 587, username='z087320002@gmail.com', password='tqrthrlfpjimflxy')
-    smtp.to('z08732-0002@gmx.de')
-    smtp.write("Subject: Poolserver-Debug\n\n")
-    smtp.write("back")
-    smtp.send()
-    smtp.quit()
+    sendMail(back)
 
     #backEncoded=back.encode('utf-8')
     #UDPServer.sendto(backEncoded,address)
