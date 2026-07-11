@@ -117,7 +117,7 @@ smtp.write("Neustart")
 smtp.send()
 smtp.quit()
 
-sendMail("Meldung")
+#sendMail("Meldung")
 
 def DatZeit():
     jetzt=rtc.datetime()
@@ -255,6 +255,11 @@ conversion_factor = 3.303 / (65535)
 #smtp.send()
 #smtp.quit()
 
+Pu_n2.value(0)  # soll auf jeden fall laufen
+Pu_n3.value(0)
+Pu_n1.value(1)
+Pu_go.value(1)
+
 
 while True:
    try:
@@ -280,6 +285,7 @@ jetzt = rtc.datetime()
 
 #print("vor Hauptschleife")
 
+sendMail("vor Hauptschleife - 1")
 
 while True:
     jetzt=rtc.datetime()
