@@ -249,11 +249,11 @@ conversion_factor = 3.303 / (65535)
 #smtp.send()
 #smtp.quit()
 
-Pu_n2.value(0)  # soll auf jeden fall laufen
-Pu_n3.value(0)
-Pu_n1.value(1)
-Pu_go.value(1)
-sendMail("Pumpe n1")
+#Pu_n2.value(0)  # soll auf jeden fall laufen
+#Pu_n3.value(0)
+#Pu_n1.value(1)
+#Pu_go.value(1)
+#sendMail("Pumpe n1")
 
 while True:
    try:
