@@ -126,8 +126,8 @@ def DatZeit():
     return tm
     
 sendMail("Neustart0")
-tm=str(DatZeit())
-sendMail("Neustart: "+tm)
+#tm=str(DatZeit())
+#sendMail("Neustart: "+tm)
 
 mins = 10 # 10 min Genauigkeit für Start/Stop Pumpe
 def tick(timer):  # hier ist die Zeitabfrage
