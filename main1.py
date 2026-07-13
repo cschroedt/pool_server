@@ -56,8 +56,8 @@ wlan = network.WLAN(network.STA_IF)
 
 wlan.active(True)
 do_connect()
+sendMail("Neustart - connected")
 wlanInfo=wlan.ifconfig()
-
 
 pRunStatus=False # Pumpe aus/ein
 pHand=False # Pumpe von Hand aus/ein - schaltet Timer und Frostschutz aus, wenn ein, da die Pumpe schon läuft
@@ -125,7 +125,7 @@ def DatZeit():
     tm=yr+" "+mo+" "+dy+" "+hr+" "+mi
     return tm
     
-sendMail("Neustart0")
+
 #tm=str(DatZeit())
 #sendMail("Neustart: "+tm)
 
