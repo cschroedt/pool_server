@@ -5,7 +5,6 @@
 # Sommer-/Winterzeit
 # Debug eMails
 
-
 import network
 import time
 import socket
@@ -14,7 +13,7 @@ from machine import *
 import math
 import umail
 
-#from secrets import *
+from secrets import *
 from do_connect import *
 #from machine import RTC
 import ntptime
@@ -22,6 +21,31 @@ import requests
 from md5lib import md5
 from mencodeUTF16_LE import *
 from fritzactors import actors
+
+DeBug=True    # Debugmeldungen einschalten
+def sendMail(meldung):
+    global DeBug
+    if DeBug:
+        smtp = umail.SMTP('smtp.gmail.com', 587, username=secrets['username'], password=secrets['mpassword'])
+        smtp.to(secrets['sendTo'])
+        smtp.write("Subject: Poolserver-Debugmeldung\n\n")
+        smtp.write(meldung)
+        smtp.send()
+        smtp.quit()
+def DatZeit():
+    jetzt=rtc.datetime()
+    yr=str(jetzt[0])
+    mo=str(jetzt[1])
+    dy=str(jetzt[2])
+    wt=str(jetzt[3])
+    if int(mo)>=11 or int(mo) <=3:        
+        hr=str(jetzt[4]+1) # Winterzeit
+    else:
+        hr=str(jetzt[4]+2) # Sommerzeit
+    mi=str(jetzt[5])
+    tm=yr+" "+mo+" "+dy+" "+hr+" "+mi
+    return tm
+
 
 #pSTOP=
 ServerPort=2234 # Pool
@@ -40,14 +64,6 @@ PFfrei=49.9		# Pumpenleistung Filer frei, Lesen mit 57, Schreiben mit 58
 PFsaett=29.8	# Pumpenleistung Filter gesättigt, Sättigunsgrad über 59
 
 i59=0
-
-def sendMail(meldung):
-    smtp = umail.SMTP('smtp.gmail.com', 587, username='z087320002@gmail.com', password='tqrthrlfpjimflxy')
-    smtp.to('z08732-0002@gmx.de')
-    smtp.write("Subject: Poolserver-Debugmeldung\n\n")
-    smtp.write(meldung)
-    smtp.send()
-    smtp.quit()
 
 
 iLED = Pin("LED",Pin.OUT,value=0)
@@ -109,21 +125,6 @@ except:
     dData=str(pStart)+" "+str(pDauer)
     datei.write(dData)
     datei.close()
-
-
-def DatZeit():
-    jetzt=rtc.datetime()
-    yr=str(jetzt[0])
-    mo=str(jetzt[1])
-    dy=str(jetzt[2])
-    wt=str(jetzt[3])
-    if int(mo)>=11 or int(mo) <=3:        
-        hr=str(jetzt[4]+1) # Winterzeit
-    else:
-        hr=str(jetzt[4]+2) # Sommerzeit
-    mi=str(jetzt[5])
-    tm=yr+" "+mo+" "+dy+" "+hr+" "+mi
-    return tm
     
 
 #tm=str(DatZeit())
@@ -301,7 +302,7 @@ while True:
     messageDecoded=message.decode('utf-8')
     print('Empfangen:',messageDecoded,' von ',address[0])
     back='Emfangen wurde: '+messageDecoded
-    sendMail(back)
+    sendMail(back+' '+tm)
 
     #backEncoded=back.encode('utf-8')
     #UDPServer.sendto(backEncoded,address)
