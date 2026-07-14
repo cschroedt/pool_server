@@ -13,7 +13,7 @@ WIFI_PASSWORD = secrets['password'] #"Rainlesberg12" # Replace with your actual 
 # IMPORTANT: Replace "your-username/your-repo" with your actual username and repository name.
 FIRMWARE_URL = "https://raw.githubusercontent.com/cschroedt/pool_server/main"
 # List of files to update from the repository
-FILES_TO_UPDATE = ['main1.py', 'version.txt'] # Add any other files you need
+FILES_TO_UPDATE = ['main1.py', 'version.txt', 'do_connect.py', 'boot.py', 'secrets.py'] # Add any other files you need
 
 # --- Connect to Wi-Fi ---
 wlan = network.WLAN(network.STA_IF)
