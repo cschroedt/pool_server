@@ -27,10 +27,11 @@ def do_connect(ssid=secrets['ssid'],psk=secrets['wlpassword']):
         raise RuntimeError('wifi connection failed')
     else:
         print('connected')
-        ip=wlan.ifconfig()[0]
+        #ip=wlan.ifconfig()[0]
         wlan.config(pm=0x0010) # max Leistung
-        print('network config: ', ip)
-        return ip
+        #print('network config: ', ip)
+        #return ip
+        return wlan.status('rssi')
     
 def sync_time():
     """Synchronisiert die interne Uhr via NTP."""
