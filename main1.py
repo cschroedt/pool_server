@@ -47,7 +47,7 @@ def DatZeit():
     return tm
 
 
-pSTOP=
+#pSTOP=
 ServerPort=2234 # Pool
 #ServerPort=2222 # Test
 
