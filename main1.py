@@ -71,8 +71,8 @@ time.sleep(1)
 wlan = network.WLAN(network.STA_IF)
 
 wlan.active(True)
-do_connect()
-sendMail("Neustart - connected")
+rss=do_connect()
+sendMail("Neustart - connected: "+str(rss))
 wlanInfo=wlan.ifconfig()
 
 pRunStatus=False # Pumpe aus/ein
