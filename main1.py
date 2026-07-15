@@ -69,14 +69,14 @@ i59=0
 iLED = Pin("LED",Pin.OUT,value=0)
 time.sleep(1)
 tm=DatZeit()
-dateiopen("Version.txt",'r')
+dateiopen("version.txt",'r')
 Version=datei.read()
 datei.close()
 wlan = network.WLAN(network.STA_IF)
 
 wlan.active(True)
 rss=do_connect()
-sendMail("Neustart - Version: "+" Zeit: "+tm+" Signal: "+str(rss))
+sendMail("Neustart - Version: "+Version+" Zeit: "+tm+" Signal: "+str(rss))
 wlanInfo=wlan.ifconfig()
 
 pRunStatus=False # Pumpe aus/ein
