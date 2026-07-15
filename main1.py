@@ -1,4 +1,4 @@
-# Version 5.64 - 26_07_10
+# Version 5.65 - 26_07_15
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
@@ -68,11 +68,15 @@ i59=0
 
 iLED = Pin("LED",Pin.OUT,value=0)
 time.sleep(1)
+tm=DatZeit()
+dateiopen("Version.txt",'r')
+Version=datei.read()
+datei.close()
 wlan = network.WLAN(network.STA_IF)
 
 wlan.active(True)
 rss=do_connect()
-sendMail("Neustart - connected: "+str(rss))
+sendMail("Neustart - Version: "+" Zeit: "+tm+" Signal: "+str(rss))
 wlanInfo=wlan.ifconfig()
 
 pRunStatus=False # Pumpe aus/ein
