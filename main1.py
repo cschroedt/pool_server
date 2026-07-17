@@ -1,4 +1,4 @@
-# Version 5.661 - 26_07_15
+# Version 5.662 - 26_07_17
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
@@ -487,6 +487,11 @@ while True:
         backEncoded=(str(temperatur)+"\n"+str(spannung)).encode('utf-8')
         UDPServer.sendto(backEncoded,address)
         sendMail("Gesendet: "+stri)
+        UDPServer.sendto(backEncoded,address)
+        time.sleep(0.1)
+        UDPServer.sendto(backEncoded,address)
+
+
 
     #elif messageDecoded=="26": # lese Frostgrenze, TempKoeffs
         #Msg="FrostGrenze, TempKoeffs: "+str(FrostGrenze)+" "+str(TempKoeff0)+" "+str(TempKoeff1)
