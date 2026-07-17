@@ -1,4 +1,4 @@
-# Version 5.662 - 26_07_17
+# Version 5.663 - 26_07_17
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
@@ -469,6 +469,9 @@ while True:
         backEncoded=str(Vr).encode('utf-8')
         UDPServer.sendto(backEncoded,address)
         sendMail("Gesendet: "+stri)
+        UDPServer.sendto(backEncoded,address)
+        time.sleep(0.1)
+        UDPServer.sendto(backEncoded,address)
     elif messageDecoded == '21': # Temperatur interner Sensor
         i=0
         value_a=0
