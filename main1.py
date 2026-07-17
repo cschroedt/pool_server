@@ -25,7 +25,7 @@ from fritzactors import actors
 DeBug=True    # Debugmeldungen einschalten
 def sendMail(meldung):
     global DeBug
-    if DeBug:
+    if DeBug or meldung[0]=='N': # Neustart-Meldung soll immer gesendet werden
         smtp = umail.SMTP('smtp.gmail.com', 587, username=secrets['username'], password=secrets['mpassword'])
         smtp.to(secrets['sendTo'])
         smtp.write("Subject: Poolserver-Debugmeldung\n\n")
@@ -88,7 +88,7 @@ while True:
       continue
 rtc=RTC()
 tm=DatZeit()
-stri="Neustart - Version: "+Version+" Zeit: "+tm+" Signal: "+str(rss)+"dB"
+stri="Neustart - Version: "+Version+", Zeit: "+tm+",7 Signal: "+str(rss)+"dB"
 print(stri)
 sendMail(stri)
 wlanInfo=wlan.ifconfig()
