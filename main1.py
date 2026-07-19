@@ -1,4 +1,4 @@
-# Version 5.663 - 26_07_17
+# Version 5.666 - 26_07_19
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
@@ -25,7 +25,7 @@ from fritzactors import actors
 DeBug=False    # Debugmeldungen einschalten
 def sendMail(meldung):
     global DeBug
-    if DeBug or meldung[0]=='N': # Neustart-Meldung soll immer gesendet werden
+    if DeBug==True or meldung[0]=='N': # Neustart-Meldung soll immer gesendet werden
         smtp = umail.SMTP('smtp.gmail.com', 587, username=secrets['username'], password=secrets['mpassword'])
         smtp.to(secrets['sendTo'])
         smtp.write("Subject: Poolserver-Debugmeldung\n\n")
