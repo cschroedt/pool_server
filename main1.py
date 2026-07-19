@@ -22,7 +22,7 @@ from md5lib import md5
 from mencodeUTF16_LE import *
 from fritzactors import actors
 
-DeBug=True    # Debugmeldungen einschalten
+DeBug=False    # Debugmeldungen einschalten
 def sendMail(meldung):
     global DeBug
     if DeBug or meldung[0]=='N': # Neustart-Meldung soll immer gesendet werden
