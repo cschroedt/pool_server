@@ -81,7 +81,7 @@ Version=datei.read()
 datei.close()
 
 wlan = network.WLAN(network.STA_IF)
-
+wlan.config(pm=0x00160004)
 wlan.active(True)
 rss=do_connect()
 while True:
