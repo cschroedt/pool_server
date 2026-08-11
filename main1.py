@@ -1,10 +1,10 @@
-# Version 5.7 - 26_08_09
+# Version 5.722 - 26_08_09
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
 # Sommer-/Winterzeit
 # Debug eMails
-# 2. Kern als Watchdog
+# 2. Kern als Watchdog - nein!!
 
 import network
 import time
@@ -13,7 +13,6 @@ import machine
 from machine import *
 import math
 import umail
-import _thread
 
 from secrets import *
 from do_connect import *
@@ -28,21 +27,6 @@ DeBug=True    # Debugmeldungen einschalten
 
 # Gemeinsames Lebenszeichen als globale Variable
 core0_heartbeat = 0
-
-def core1_watchdog():
-    """Läuft auf Core 1 und überwacht Core 0."""
-    global core0_heartbeat
-    last_heartbeat = -1
-    while True:
-        # Prüfintervall: 30 Minuten
-        time.sleep(1800)
-        # Hat sich das Lebenszeichen verändert?
-        if core0_heartbeat == last_heartbeat:
-            print("Core 0 hängt! Löse System-Reset aus...")
-            time.sleep_ms(100)  # Warten, um Print-Puffer zu leeren
-            # Vollständiger Hardware-Reboot des Pico 2W
-            machine.reset()
-        last_heartbeat = core0_heartbeat
 
 
 #def sendMail(caption, detail):
@@ -88,7 +72,6 @@ PFfrei=49.9		# Pumpenleistung Filer frei, Lesen mit 57, Schreiben mit 58
 PFsaett=29.8	# Pumpenleistung Filter gesättigt, Sättigunsgrad über 59
 
 i59=0
-_thread.start_new_thread(core1_watchdog, ())
 
 iLED = Pin("LED",Pin.OUT,value=0)
 time.sleep(1)
