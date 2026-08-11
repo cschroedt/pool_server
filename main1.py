@@ -1,4 +1,4 @@
-# Version 5.729 - 26_08_11
+# Version 5.735 - 26_08_11
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
@@ -325,7 +325,7 @@ while True:
     message,address=UDPServer.recvfrom(bufferSize)
     messageDecoded=message.decode('utf-8')
     print('Empfangen:',messageDecoded,' von ',address[0])
-    back='Emfangen wurde: '+messageDecoded
+    back='Emfangen: '+messageDecoded
     sendMail(back+' '+tm)
 
     #backEncoded=back.encode('utf-8')
