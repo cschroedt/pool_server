@@ -28,7 +28,7 @@ DeBug=True    # Debugmeldungen einschalten
 # Gemeinsames Lebenszeichen als globale Variable
 core0_heartbeat = 0
 
-def get_PumpPower():
+def get_PumpPwr():
     response = requests.get("http://192.168.178.1/login_sid.lua")
     response_content = response.content.decode('utf-8')
     ia=response_content.index("nge>")
@@ -430,6 +430,17 @@ while True:
         #datei.write(tm+"\n"+str(time.time()))
         datei.write(tm)
         datei.close()
+    elif messageDecoded == "04S": # Sättigung Filter abfragen
+        ppwr=get_PumpPwr()-3
+        backEncoded=str(ppwr).encode('utf-8')
+        UDPServer.sendto(backEncoded,address)
+        sendMail("Pleis : "+stri)
+        UDPServer.sendto(backEncoded,address)
+        time.sleep(0.1)
+        UDPServer.sendto(backEncoded,address)    
+        time.sleep(0.1)
+        UDPServer.sendto(backEncoded,address)    
+        
     elif messageDecoded == "05": # Filter rückspülen
         Fil_ruec.value(1)
         datei=open("Filter_tm.txt",'w')
