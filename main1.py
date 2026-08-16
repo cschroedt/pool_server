@@ -1,10 +1,10 @@
-# Version 5.7392 - 26_08_11
+# Version 5.8 - 26_08_16
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
 # Sommer-/Winterzeit
 # Debug eMails
-# 2. Kern als Watchdog - nein!!
+# Leistungsabfrage Pumpe
 
 import network
 import time
@@ -28,6 +28,40 @@ DeBug=True    # Debugmeldungen einschalten
 # Gemeinsames Lebenszeichen als globale Variable
 core0_heartbeat = 0
 
+def get_PumpPower():
+    response = requests.get("http://192.168.178.1/login_sid.lua")
+    response_content = response.content.decode('utf-8')
+    ia=response_content.index("nge>")
+    ie=response_content.index("</Cha")
+    challenge=response_content[ia+4:ie]
+    password="38ca7ff9"
+    tmp="{}-{}".format(challenge, password)
+    tmp2=mencodeUTF16_LE(tmp)
+    h = md5()
+    h.update(tmp2)
+    has = (h.digest())
+    has = to_hex(has)
+    username="pool"
+    respons = "{}-{}".format(challenge, has)
+    response = requests.get("http://192.168.178.1/login_sid.lua?username={}&response={}".format(username, respons))
+    response_content = response.content.decode('utf-8')
+    ia=response_content.index("SID>")
+    SID=response_content[ia+4:ia+20]
+    print(SID)
+    resp=requests.get("http://192.168.178.1/webservices/homeautoswitch.lua?ain=116300064720&switchcmd=getswitchpower&sid={}".format(SID))
+    if resp.status_code==200:
+        print("Login erfolgreich")
+    response_content = resp.content.decode('utf-8')
+
+    resp1=requests.get("http://192.168.178.1/?sid={}&security:command/logout={}".format(SID,"dmy"))
+    if resp1.status_code==200:
+        print("Logout erfolgreich")
+        return(float(response_content)/1000)
+    else:
+        print("Fehler bei Logout")
+        return -1
+    else:
+        return -1    
 
 #def sendMail(caption, detail):
 def sendMail(caption):
