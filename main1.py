@@ -25,9 +25,6 @@ from fritzactors import actors
 
 DeBug=True    # Debugmeldungen einschalten
 
-# Gemeinsames Lebenszeichen als globale Variable
-core0_heartbeat = 0
-
 def get_PumpPwr():
     response = requests.get("http://192.168.178.1/login_sid.lua")
     response_content = response.content.decode('utf-8')
@@ -697,28 +694,16 @@ while True:
         datei.write(str(PFfrei)+" "+str(PFsaett))
         datei.close()
         
-    elif (messageDecoded == "59"): # Pumpenleistung senden
-
-        if i59>0:
-            pwr=actors(9,SID)
-            time.sleep(1)
-            pwr=stri[0:stri.find(' ')-1]
+    elif (messageDecoded == "59"): # Pumpenleistung und Grenzwerte senden
+        pwr=get_PumpPwr()  
+        if pwr>0:
             backEncoded=(str(pwr)+" "+str(PFfrei)+" "+str(PFsaett)).encode('utf-8')
             UDPServer.sendto(backEncoded,address)
             print(backEncoded)
-        if i59==0:
-            stri=actors(9,"")
-            SID=stri[stri.find(' ')+1:]
-            print(SID)
-            i59=1
-            pwr=stri[0:stri.find(' ')-1]
-            backEncoded=(str(pwr)+" "+str(PFfrei)+" "+str(PFsaett)).encode('utf-8')
+        else:
+            backEncoded=("Momentan nicht möglich")
             UDPServer.sendto(backEncoded,address)
             print(backEncoded)
-        #time.sleep(1)
-        #UDPServer.close()
-        #UDPServer=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-        #UDPServer.bind((ServerIP,ServerPort))
         
     elif (messageDecoded == "60"): # Laufdauer-Parameter Pumpe lesen (Stunden)
         datei=open("PDData.txt",'r')
