@@ -1,4 +1,4 @@
-# Version 5.8 - 26_08_16
+# Version 5.801 - 26_08_18
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
