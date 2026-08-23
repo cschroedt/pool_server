@@ -1,1 +1,1 @@
-version.txt main1.py FILES_TO_UPDATE.txt
+version.txt main1.py ota_updater.py FILES_TO_UPDATE.txt
