@@ -340,7 +340,7 @@ datei.close()
 
 #print("vor Hauptschleife")
 
-#sendMail("vor Hauptschleife - 1")
+sendMail("vor Hauptschleife - Version 5.83")
 
 while True:
     jetzt=rtc.datetime()
