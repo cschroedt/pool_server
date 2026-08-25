@@ -1,4 +1,2 @@
 version.txt
 main1.py
-boot1.py
-ota_updater.py
