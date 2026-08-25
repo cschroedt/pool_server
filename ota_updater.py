@@ -91,8 +91,8 @@ class OTAUpdater:
             f.write(self.latest_version)
             
         print("Update complete! Ready for restart of main program...")
-        # import machine
-        # machine.reset() # Reboot to run the new code
+        import machine
+        machine.reset() # Reboot to run the new code
 
     def check_for_updates(self):
         """ Check if a new version is available and perform the update if so. """
