@@ -25,11 +25,22 @@ from mencodeUTF16_LE import *
 
 DeBug=True    # Debugmeldungen einschalten
 
+#def sendMail(caption, detail):
+def sendMail(caption):
+    global DeBug
+    if DeBug or caption[0]=='N': # Neustart-Meldung soll immer gesendet werden
+        smtp = umail.SMTP('smtp.gmail.com', 587, username=secrets['username'], password=secrets['mpassword'])
+        smtp.to(secrets['sendTo'])
+        smtp.write("Subject: Pool - "+caption+"\n\n")
+        #smtp.write(detail)
+        smtp.send()
+        smtp.quit()
 
 def get_PumpPwr():
     response = requests.get("http://192.168.178.1/login_sid.lua")
     response_content = response.content.decode('utf-8')
     response.close()
+    sendMail("PPwr 1")
     ia=response_content.index("nge>")
     ie=response_content.index("</Cha")
     challenge=response_content[ia+4:ie]
@@ -45,6 +56,7 @@ def get_PumpPwr():
     response = requests.get("http://192.168.178.1/login_sid.lua?username={}&response={}".format(username, respons))
     response_content = response.content.decode('utf-8')
     response.close()
+    sendMail("PPwr 2")
     ia=response_content.index("SID>")
     SID=response_content[ia+4:ia+20]
     print(SID)
@@ -52,7 +64,7 @@ def get_PumpPwr():
     if resp.status_code==200:
         print("Login erfolgreich")
     response_content = resp.content.decode('utf-8')
-
+    sendMail("PPwr 3")
     resp1=requests.get("http://192.168.178.1/?sid={}&security:command/logout={}".format(SID,"dmy"))
     if resp1.status_code==200:
         print("Logout erfolgreich")
@@ -63,17 +75,6 @@ def get_PumpPwr():
         resp1.close()
         return -1
    
-#def sendMail(caption, detail):
-def sendMail(caption):
-    global DeBug
-    if DeBug or caption[0]=='N': # Neustart-Meldung soll immer gesendet werden
-        smtp = umail.SMTP('smtp.gmail.com', 587, username=secrets['username'], password=secrets['mpassword'])
-        smtp.to(secrets['sendTo'])
-        smtp.write("Subject: Pool - "+caption+"\n\n")
-        #smtp.write(detail)
-        smtp.send()
-        smtp.quit()
-
 def DatZeit():
     jetzt=rtc.datetime()
     yr=str(jetzt[0])
