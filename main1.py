@@ -1,4 +1,4 @@
-# Version 5.83 - 26_08_25
+# Version 5.84 - 26_08_25
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
@@ -340,7 +340,7 @@ datei.close()
 
 #print("vor Hauptschleife")
 
-sendMail("vor Hauptschleife - Version 5.83")
+sendMail("vor Hauptschleife - Version 5.84")
 
 while True:
     jetzt=rtc.datetime()
@@ -363,7 +363,7 @@ while True:
     messageDecoded=message.decode('utf-8')
     print('Empfangen:',messageDecoded,' von ',address[0])
     back='Emfangen: '+messageDecoded
-    sendMail(back+' '+tm)
+    sendMail(back+' V5.84 '+tm)
 
     #backEncoded=back.encode('utf-8')
     #UDPServer.sendto(backEncoded,address)
