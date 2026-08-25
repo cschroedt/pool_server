@@ -1,4 +1,4 @@
-# Version 5.81 - 26_08_24
+# Version 5.82 - 26_08_25
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
@@ -701,6 +701,7 @@ while True:
         
     elif (messageDecoded == "59"): # Pumpenleistung und Grenzwerte senden
         pwr=get_PumpPwr()  
+        sendMail("PPwr: "+str(pwr))
         if pwr>0:
             backEncoded=(str(pwr)+" "+str(PFfrei)+" "+str(PFsaett)).encode('utf-8')
             UDPServer.sendto(backEncoded,address)
