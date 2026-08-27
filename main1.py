@@ -1,4 +1,4 @@
-# Version 5.84 - 26_08_25
+# Version 5.85 - 26_08_27
 # Port 2234
 # Frostschutz WPumpe - int. Temp um ATempOffset nach unten korrigiert
 # SK/BO Halbstellungen korrigiert
@@ -40,7 +40,7 @@ def get_PumpPwr():
     response = requests.get("http://192.168.178.1/login_sid.lua")
     response_content = response.content.decode('utf-8')
     response.close()
-    sendMail("PPwr 1")
+    #sendMail("PPwr 1")
     ia=response_content.index("nge>")
     ie=response_content.index("</Cha")
     challenge=response_content[ia+4:ie]
@@ -56,7 +56,7 @@ def get_PumpPwr():
     response = requests.get("http://192.168.178.1/login_sid.lua?username={}&response={}".format(username, respons))
     response_content = response.content.decode('utf-8')
     response.close()
-    sendMail("PPwr 2")
+    #sendMail("PPwr 2")
     ia=response_content.index("SID>")
     SID=response_content[ia+4:ia+20]
     print(SID)
@@ -64,7 +64,7 @@ def get_PumpPwr():
     if resp.status_code==200:
         print("Login erfolgreich")
     response_content = resp.content.decode('utf-8')
-    sendMail("PPwr 3")
+    #sendMail("PPwr 3")
     resp1=requests.get("http://192.168.178.1/?sid={}&security:command/logout={}".format(SID,"dmy"))
     if resp1.status_code==200:
         print("Logout erfolgreich")
@@ -340,7 +340,7 @@ datei.close()
 
 #print("vor Hauptschleife")
 
-sendMail("vor Hauptschleife - Version 5.84")
+#sendMail("vor Hauptschleife - Version 5.84")
 
 while True:
     jetzt=rtc.datetime()
@@ -751,8 +751,10 @@ while True:
         print("Pumpe normal")
     elif (messageDecoded == "998Dbg"):
         DeBug=True
+        sendMail("Debug on")
     elif (messageDecoded == "998noDbg"):
-        DeBug=False        
+        DeBug=False     
+        sendMail("Debug off")
     elif (messageDecoded == "999x"): # Server stop
         smtp = umail.SMTP('smtp.gmail.com', 587, username='z087320002@gmail.com', password='tqrthrlfpjimflxy')
         smtp.to('z08732-0002@gmx.de')
