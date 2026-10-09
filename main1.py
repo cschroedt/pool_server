@@ -756,7 +756,7 @@ while True:
         DeBug=False     
         sendMail("Debug off")
     elif (messageDecoded == "999x"): # Server stop
-        smtp = umail.SMTP('smtp.gmail.com', 587, username='z087320002@gmail.com', password='tqrthrlfpjimflxy')
+        smtp = umail.SMTP('smtp.gmail.com', 587, username=secrets['username'], password=secrets['mpassword'])
         smtp.to('z08732-0002@gmx.de')
         smtp.write("Subject: Poolserver-Stop\n\n")
         smtp.write("main1 angehalten")
@@ -769,7 +769,7 @@ while True:
         #sys.exit()
         break
     elif (messageDecoded == "999z"): # Server reset
-        smtp = umail.SMTP('smtp.gmail.com', 587, username='z087320002@gmail.com', password='tqrthrlfpjimflxy')
+        smtp = umail.SMTP('smtp.gmail.com', 587, username=secrets['username'], password=secrets['mpassword'])
         smtp.to('z08732-0002@gmx.de')
         smtp.write("Subject: Poolserver-Reset\n\n")
         smtp.write("Alles angehalten, Konsole verfügbar")
@@ -783,11 +783,6 @@ while True:
         break
     else:
         print("Ungültiges Kommando")
-# Lebenszeichen aktualisieren
-    #core0_heartbeat = (core0_heartbeat + 1) % 1_000_000
-
-    #time.sleep(0.1)        
-
 
 
             
