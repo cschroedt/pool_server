@@ -100,8 +100,8 @@ pRunStatus=False
 
 Uref=3.335 # Referenzspannung  = Pico Pin 36
 Rv=9900 # Festwiderstand im Teiler
-R0=11000 # NTC bei T0
-B=4000 # Bkoeff des NTC
+R0=8852.774 # NTC bei T0
+B=2826.41 # Bkoeff des NTC
 ATempKoeff0=286.47 # Außentemperatur über Pico
 ATempKoeff1=-382.79 # Lesen der Params mit 23, Setzen mit 24
 ATempOffset=1.0	# wird abgezogen wg. Eigenerwärmung des Pico im Gehäuse
