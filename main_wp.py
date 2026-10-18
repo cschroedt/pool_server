@@ -1,4 +1,4 @@
-# Version 1.03 - 26_10_18
+# Version 1.04 - 26_10_18
 # Port 2234 - Achtung, identisch zum Poolserver, daher müssen Kommandos disjunkt sein
 # beginnen daher alle mit w
 # int. Temp um ATempOffset nach unten korrigiert
@@ -206,7 +206,7 @@ Rel=machine.Pin(21, machine.Pin.OUT,value=0) #Relais
 
 
 temp = machine.ADC(26) # ADC Kanal 0
-sensor = ADC(4) # interner Sensorprint 
+sensor = ADC(4) # interner Sensor
 conversion_factor = 3.335 / (65535)
 
 
@@ -319,11 +319,12 @@ while True:
         
         Rntc=Rv*(Uref/Ur-1)
         temp=1/(1/273.15+1/B*math.log(R0/Rntc))
-        stri="Spg/Temp: "+str(Ur)+"\n"+str(tmp)
+        stri="Spg/Temp: "+str(Ur)+"\n"+str(temp)
         print(stri)
-        backEncoded=str(Ur).encode('utf-8')
-        UDPServer.sendto(backEncoded,address)
         sendMail("Gesendet: "+stri)
+        backEncoded=stri.encode('utf-8')
+        UDPServer.sendto(backEncoded,address)
+        time.sleep(0.1)
         UDPServer.sendto(backEncoded,address)
         time.sleep(0.1)
         UDPServer.sendto(backEncoded,address)
