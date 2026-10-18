@@ -1,6 +1,6 @@
-# Version 1.02 - 26_10_18
+# Version 1.03 - 26_10_18
 # Port 2234 - Achtung, identisch zum Poolserver, daher müssen Kommandos disjunkt sein
-# beginnen daher alle mit W
+# beginnen daher alle mit w
 # int. Temp um ATempOffset nach unten korrigiert
 # Sommer-/Winterzeit
 # Abfrage der Pumpenleisung - einfach zur Sicherheit möglich
@@ -174,8 +174,6 @@ def tick(timer):  # hier ist die Zeitabfrage
         i+=1
     # Dezimalzahl in eine reelle Zahl umrechnen
     spannung = value_a/20 * conversion_factor
-    # Spannung in Temperatur umrechnen
-        #temperatur = 27 - (spannung - 0.681) / 0.001721
     temperatur = ATempKoeff0 + spannung*ATempKoeff1 - ATempOffset
     temperatur=int(temperatur*10)/10
     #print(temperatur)
@@ -209,7 +207,7 @@ Rel=machine.Pin(21, machine.Pin.OUT,value=0) #Relais
 
 temp = machine.ADC(26) # ADC Kanal 0
 sensor = ADC(4) # interner Sensorprint 
-conversion_factor = 3.303 / (65535)
+conversion_factor = 3.335 / (65535)
 
 
 while True:
@@ -318,17 +316,17 @@ while True:
             time.sleep(0.1)
             i+=1
         Ur = Uref * float(temp_spg/20) / 65535  # ADC value to voltage conversion
-        stri="Temp-Spannung: "+str(Ur)
-        print(stri)
         
+        Rntc=Rv*(Uref/Ur-1)
+        temp=1/(1/273.15+1/B*math.log(R0/Rntc))
+        stri="Spg/Temp: "+str(Ur)+"\n"+str(tmp)
+        print(stri)
         backEncoded=str(Ur).encode('utf-8')
         UDPServer.sendto(backEncoded,address)
         sendMail("Gesendet: "+stri)
         UDPServer.sendto(backEncoded,address)
         time.sleep(0.1)
         UDPServer.sendto(backEncoded,address)
-        Rntc=Rv*(Uref/Ur-1)
-        temp=1/(1/273.15+1/B*math.log(R0/Rntc))
         
     elif messageDecoded == 'w21': # Temperatur interner Sensor
         i=0
