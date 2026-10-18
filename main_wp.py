@@ -1,4 +1,4 @@
-# Version 1.05 - 26_10_18
+# Version 1.06 - 26_10_18
 # Port 2234 - Achtung, identisch zum Poolserver, daher müssen Kommandos disjunkt sein
 # beginnen daher alle mit w
 # int. Temp um ATempOffset nach unten korrigiert
@@ -100,7 +100,7 @@ pRunStatus=False
 
 Uref=3.335 # Referenzspannung  = Pico Pin 36
 Rv=9900 # Festwiderstand im Teiler
-R0=8852.774 # NTC bei T0=298.15 K
+R0=9738.05 # NTC bei T0=298.15 K
 B=2826.41 # Bkoeff des NTC
 ATempKoeff0=20.6 # Außentemperatur über Pico
 ATempKoeff1=435.06 # Lesen der Params mit 23, Setzen mit 24
@@ -318,7 +318,7 @@ while True:
         Ur = Uref * float(temp_spg/20) / 65535  # ADC value to voltage conversion
         
         Rntc=Rv*(Uref/Ur-1)
-        temp=1/(1/273.15+1/B*math.log(R0/Rntc))
+        temp=1/(1/298.15+1/B*math.log(R0/Rntc))-273.15
         stri="Spg/Temp: "+str(Ur)+"\n"+str(temp)
         print(stri)
         sendMail("Gesendet: "+stri)
