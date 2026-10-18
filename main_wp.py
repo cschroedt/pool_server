@@ -1,4 +1,4 @@
-# Version 1.01 - 26_10_12
+# Version 1.02 - 26_10_18
 # Port 2234 - Achtung, identisch zum Poolserver, daher müssen Kommandos disjunkt sein
 # beginnen daher alle mit W
 # int. Temp um ATempOffset nach unten korrigiert
