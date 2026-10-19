@@ -1,10 +1,11 @@
-# Version 1.06 - 26_10_18
+# Version 1.07 - 26_10_19
 # Port 2234 - Achtung, identisch zum Poolserver, daher müssen Kommandos disjunkt sein
 # beginnen daher alle mit w
 # int. Temp um ATempOffset nach unten korrigiert
 # Sommer-/Winterzeit
 # Abfrage der Pumpenleisung - einfach zur Sicherheit möglich
 # Debug eMails - schaltbar
+# try - except bei w20
 
 import network
 import time
@@ -318,16 +319,26 @@ while True:
         Ur = Uref * float(temp_spg/20) / 65535  # ADC value to voltage conversion
         
         Rntc=Rv*(Uref/Ur-1)
-        temp=1/(1/298.15+1/B*math.log(R0/Rntc))-273.15
-        stri="Spg/Temp: "+str(Ur)+"\n"+str(temp)
-        print(stri)
-        sendMail("Gesendet: "+stri)
-        backEncoded=stri.encode('utf-8')
-        UDPServer.sendto(backEncoded,address)
-        time.sleep(0.1)
-        UDPServer.sendto(backEncoded,address)
-        time.sleep(0.1)
-        UDPServer.sendto(backEncoded,address)
+        try:
+            temp=1/(1/298.15+1/B*math.log(R0/Rntc))-273.15
+            stri="Spg/Temp: "+str(Ur)+"\n"+str(temp)
+            print(stri)
+            sendMail("Gesendet: "+stri)
+            backEncoded=stri.encode('utf-8')
+            UDPServer.sendto(backEncoded,address)
+            time.sleep(0.1)
+            UDPServer.sendto(backEncoded,address)
+            time.sleep(0.1)
+            UDPServer.sendto(backEncoded,address)
+        except:
+            stri="WP-Server: Except w20"
+            sendMail("Gesendet: "+stri)
+            backEncoded=stri.encode('utf-8')
+            UDPServer.sendto(backEncoded,address)
+            time.sleep(0.1)
+            UDPServer.sendto(backEncoded,address)
+            time.sleep(0.1)
+            UDPServer.sendto(backEncoded,address)
         
     elif messageDecoded == 'w21': # Temperatur interner Sensor
         i=0
